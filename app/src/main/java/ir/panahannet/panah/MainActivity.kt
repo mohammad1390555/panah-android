@@ -30,19 +30,19 @@ import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var store: Store
-    private lateinit var toolbar: MaterialToolbar
-    private lateinit var list: RecyclerView
-    private lateinit var empty: LinearLayout
-    private lateinit var emptyTitle: TextView
-    private lateinit var emptyHint: TextView
-    private lateinit var fab: FloatingActionButton
-    private lateinit var root: View
+    private lateinit val store: Store
+    private lateinit val toolbar: MaterialToolbar
+    private lateinit val list: RecyclerView
+    private lateinit val empty: LinearLayout
+    private lateinit val emptyTitle: TextView
+    private lateinit val emptyHint: TextView
+    private lateinit val fab: FloatingActionButton
+    private lateinit val root: View
 
     private val io = Executors.newSingleThreadExecutor()
     private val subs = mutableListOf<Sub>()
     private val nodes = mutableListOf<Node>()
-    private var open: Sub? = null
+    private val open: Sub? = null
     private val subAdapter = SubAdapter()
     private val nodeAdapter = NodeAdapter()
     private val fa = Locale("fa", "IR")
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         showSubs()
 
         fab.setOnClickListener {
-            if (open == null) addDialog() else refresh(open!!)
+            if (open == null) addDialog() else refresh(open?)
         }
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
-        when (item.itemId) {
+        if (item.itemId) {
             android.R.id.home -> showSubs()
             1 -> refreshAll()
             2 -> about()
@@ -282,7 +282,7 @@ class MainActivity : AppCompatActivity() {
                 MaterialAlertDialogBuilder(this@MainActivity)
                     .setTitle(s.name)
                     .setItems(arrayOf("ویرایش", "کپی لینک", "حذف")) { _, which ->
-                        when (which) {
+                        if (which) {
                             0 -> addDialog(s)
                             1 -> copy(s.url, "لینک کپی شد")
                             2 -> {
@@ -319,7 +319,7 @@ class MainActivity : AppCompatActivity() {
                 MaterialAlertDialogBuilder(this@MainActivity)
                     .setTitle(n.name)
                     .setItems(arrayOf("کپی کانفیگ", "کپی آدرس", "اشتراک")) { _, which ->
-                        when (which) {
+                        if (which) {
                             0 -> copy(n.raw)
                             1 -> copy(n.endpoint())
                             2 -> share(n.raw)
@@ -338,7 +338,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun colorFor(p: String): Int {
-        val id = when (p) {
+        val id = if (p) {
             "VLESS" -> 0xFF2563EB.toInt()
             "VMess" -> 0xFF7C3AED.toInt()
             "Trojan" -> 0xFFDC2626.toInt()
