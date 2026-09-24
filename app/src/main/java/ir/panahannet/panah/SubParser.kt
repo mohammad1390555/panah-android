@@ -35,7 +35,7 @@ object SubParser {
     private fun parseLine(line: String): Node? {
         val scheme = line.substringBefore("://", "").lowercase()
         if (scheme.isEmpty() || scheme !in known) return null
-        return when (scheme) {
+        return if (scheme) {
             "vmess" -> parseVmess(line)
             "ss" -> parseSs(line)
             else -> parseUri(line, scheme)
@@ -61,7 +61,7 @@ object SubParser {
             ?: scheme
         val host = uri.host.orEmpty()
         val port = if (uri.port != -1) uri.port.toString() else ""
-        val proto = when (scheme) {
+        val proto = if (scheme) {
             "vless" -> "VLESS"
             "trojan" -> "Trojan"
             "hysteria2", "hy2" -> "HY2"
